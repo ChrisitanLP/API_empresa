@@ -170,6 +170,34 @@ class WhatsAppController {
   }
 
   /**
+   * Clean temporary media files based on retention policy
+   * @param {Request} req - Express request object
+   * @param {Response} res - Express response object
+   */
+  async cleanTempMediaFiles(req, res) {
+    try {
+      const { olderThanDays } = req.body;
+      
+      if (!olderThanDays || olderThanDays < 0) {
+        throw new ValidationError('olderThanDays must be a positive number');
+      }
+
+      const result = await whatsappService.cleanTempMediaFiles(olderThanDays);
+      
+      res.json({ 
+        success: true, 
+        ...result
+      });
+    } catch (error) {
+      logger.error('Error cleaning temp media files:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: error.message 
+      });
+    }
+  }
+
+  /**
    * Get QR code for client authentication
    * @param {Request} req - Express request object
    * @param {Response} res - Express response object

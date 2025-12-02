@@ -345,6 +345,13 @@ const routes = {
             handler: 'getMediaFile',
             useAsync: true,
             rateLimit: { windowMs: 60000, max: 100 }
+        },
+        { 
+            path: '/media/cleanup', 
+            method: 'post', 
+            handler: 'cleanTempMediaFiles',
+            useAsync: true,
+            rateLimit: { windowMs: 60000, max: 5 }
         }
     ],
     status: [

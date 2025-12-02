@@ -105,6 +105,52 @@ class WhatsAppService {
   }
 
   /**
+   * Clean temporary media files older than specified days
+   * @param {number} olderThanDays - Delete files older than this many days
+   * @returns {Promise<Object>} Cleanup results
+   */
+  async cleanTempMediaFiles(olderThanDays) {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
+      
+      const files = await fs.readdir(this.tempDir);
+      let deletedCount = 0;
+      let bytesFreed = 0;
+      const errors = [];
+
+      for (const file of files) {
+        try {
+          const filePath = path.join(this.tempDir, file);
+          const stats = await fs.stat(filePath);
+          
+          // Verificar si el archivo es más antiguo que el cutoff
+          if (stats.mtime < cutoffDate) {
+            bytesFreed += stats.size;
+            await fs.unlink(filePath);
+            deletedCount++;
+            logger.info(`Deleted temp file: ${file} (${stats.size} bytes)`);
+          }
+        } catch (error) {
+          logger.error(`Error deleting file ${file}:`, error);
+          errors.push({ file, error: error.message });
+        }
+      }
+
+      logger.info(`Temp cleanup completed: ${deletedCount} files deleted, ${bytesFreed} bytes freed`);
+      
+      return {
+        deletedCount,
+        bytesFreed,
+        errors: errors.length > 0 ? errors : undefined
+      };
+    } catch (error) {
+      logger.error('Error in cleanTempMediaFiles:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Check if client exists
    * @param {string} number - Phone number
    * @returns {Promise<boolean>} - Whether client exists
