@@ -1,0 +1,29 @@
+D:.
+├───src
+│    ├───.wwebjs_auth
+│    ├───conf
+│    │   ├───config.js
+│    │   ├───logger.js
+│    │   ├───websocket.js
+│    │   └───logs/
+│    ├───controllers
+│    │   ├───controllers.js
+│    │   ├───media/
+│    │   └───temp/
+│    ├───lib
+│    │   └───whatsapp.js
+│    ├───middleware
+│    │   └───validation.js
+│    ├───routes
+│    │   └───links.js
+│    ├───services
+│    │   └───services.js
+│    ├───temp
+│    └───utils
+│        ├───encryption.js
+│        ├───messageProcessor.js
+│        └───asyncHandler.js
+├───.gitignore
+├───package-lock.json
+├───package.json
+└───.env

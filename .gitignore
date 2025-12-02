@@ -1,0 +1,13 @@
+# IDE
+node_modules/
+
+# Directorios
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Archivos temporales
+temp/
+media/
+
+# Logs específicos del proyecto
+logs/
